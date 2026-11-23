@@ -330,3 +330,6 @@ namespace MasterskayaKukol
 }
 
 
+OpenChildForm(new frmTableView("Справочник: Клиенты", "Clients"));
+
+
