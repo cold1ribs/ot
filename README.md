@@ -288,5 +288,45 @@ namespace MasterskayaKukol
     }
 }
 
-        
+        ПР
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+
+namespace MasterskayaKukol
+{
+    public partial class frmReports : Form
+    {
+        string connString = @"Data Source=.\SQLEXPRESS;Initial Catalog=MasterskayaKukol;Integrated Security=True";
+        string viewName;
+
+        public frmReports(string reportTitle, string sqlViewName)
+        {
+            InitializeComponent();
+            this.Text = reportTitle;
+            this.viewName = sqlViewName;
+        }
+
+        private void frmReports_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    SqlDataAdapter adapter = new SqlDataAdapter($"SELECT * FROM {viewName}", conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    dgvReport.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка формирования отчета: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
+
 
