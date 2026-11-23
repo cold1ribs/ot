@@ -205,3 +205,87 @@ static void Main()
 }
 
 
+
+
+
+
+
+
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+
+namespace MasterskayaKukol
+{
+    public partial class frmTableView : Form
+    {
+        // Укажи здесь имя твоего сервера из SSMS (например, localhost или .\SQLEXPRESS)
+        string connString = @"Data Source=.\SQLEXPRESS;Initial Catalog=MasterskayaKukol;Integrated Security=True";
+        string tableName;
+        SqlDataAdapter adapter;
+        DataTable table;
+
+        public frmTableView(string title, string sqlTableName)
+        {
+            InitializeComponent();
+            this.Text = title;
+            this.tableName = sqlTableName;
+        }
+
+        private void frmTableView_Load(object sender, EventArgs e)
+        {
+            // Разграничение прав: Менеджер не может удалять записи и менять цены в каталогах
+            if (frmLogin.UserRole == "Менеджер")
+            {
+                dgvData.AllowUserToDeleteRows = false;
+                if (tableName == "Doll_Types" || tableName == "Materials" || tableName == "Masters")
+                {
+                    dgvData.ReadOnly = true;
+                    btnSave.Enabled = false;
+                }
+            }
+
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    adapter = new SqlDataAdapter($"SELECT * FROM {tableName}", conn);
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    table = new DataTable();
+                    adapter.Fill(table);
+                    dgvData.DataSource = table;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки данных: " + ex.Message, "Ошибка БД", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connString))
+                {
+                    adapter = new SqlDataAdapter($"SELECT * FROM {tableName}", conn);
+                    SqlCommandBuilder builder = new SqlCommandBuilder(adapter);
+                    adapter.Update(table);
+                    MessageBox.Show("Изменения успешно сохранены в базу данных!", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка сохранения: " + ex.Message, "Ошибка БД", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
+
+
