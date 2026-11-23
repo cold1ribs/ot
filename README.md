@@ -149,4 +149,39 @@ namespace MasterskayaKukol
     }
 }
 
+using System;
+using System.Windows.Forms;
+
+namespace MasterskayaKukol
+{
+    public partial class frmLogin : Form
+    {
+        public static string UserRole = "";
+
+        public frmLogin()
+        {
+            InitializeComponent();
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            if (cmbRole.Text == "Администратор" && txtPassword.Text == "admin")
+            {
+                UserRole = "Администратор";
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else if (cmbRole.Text == "Менеджер" && txtPassword.Text == "1234")
+            {
+                UserRole = "Менеджер";
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Неверный пароль или не выбрана роль!", "Ошибка входа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
 
