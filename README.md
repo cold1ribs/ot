@@ -68,3 +68,44 @@ INSERT INTO Order_Materials (ID_Order, ID_Material, quantity) VALUES
 (5, 5, 2);
 
 
+
+
+USE MasterskayaKukol;
+GO
+
+-- Запрос 1: Поиск заказов по ФИО клиента (частичное совпадение)
+DECLARE @ClientName NVARCHAR(150) = N'Смирнова';
+SELECT * FROM vw_OrdersFullInfo
+WHERE [ФИО клиента] LIKE N'%' + @ClientName + N'%';
+GO
+
+-- Запрос 2: Выборка заказов по статусу ('В работе' или 'Выполнен')
+DECLARE @Status NVARCHAR(50) = N'В работе';
+SELECT * FROM vw_OrdersFullInfo
+WHERE [Статус заказа] = @Status;
+GO
+
+-- Запрос 3: Выборка выполненных заказов за указанный период дат
+DECLARE @DateStart DATETIME = '2026-10-01';
+DECLARE @DateEnd DATETIME = '2026-10-31';
+SELECT * FROM vw_ReportCompletedOrders
+WHERE [Дата выполнения заказа] BETWEEN @DateStart AND @DateEnd;
+GO
+
+-- Запрос 4: Выборка заказов конкретного кукольника
+DECLARE @MasterName NVARCHAR(150) = N'Иванова';
+SELECT * FROM vw_OrdersFullInfo
+WHERE [ФИО кукольника] LIKE N'%' + @MasterName + N'%';
+GO
+
+-- Запрос 5: Поиск материалов с остатком на складе меньше заданного порога
+DECLARE @MinStock INT = 30;
+SELECT 
+    Material_Name AS [Наименование материала],
+    Unit AS [Ед. изм.],
+    Unit_Price AS [Цена],
+    Stock_Quantity AS [Остаток]
+FROM Materials
+WHERE Stock_Quantity < @MinStock;
+GO
+
