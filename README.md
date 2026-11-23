@@ -332,4 +332,19 @@ namespace MasterskayaKukol
 
 OpenChildForm(new frmTableView("Справочник: Клиенты", "Clients"));
 
-
+4. Повтори то же самое для остальных внутренних пунктов меню:
+	• Кукольники → OpenChildForm(new frmTableView("Справочник: Кукольники", "Masters"));
+	• Типы кукол → OpenChildForm(new frmTableView("Каталог: Типы кукол", "Doll_Types"));
+	• Материалы → OpenChildForm(new frmTableView("Каталог: Материалы", "Materials"));
+	• Журнал заказов → OpenChildForm(new frmTableView("Журнал заказов", "Orders"));
+	• Выполненные заказы → OpenChildForm(new frmReports("Отчет: Выполненные заказы", "vw_ReportCompletedOrders"));
+	• Загруженность кукольников → OpenChildForm(new frmReports("Отчет: Загруженность кукольников", "vw_ReportMastersWorkload"));
+	• Расход материалов → OpenChildForm(new frmReports("Отчет: Расход материалов", "vw_ReportMaterialsUsage"));
+	• Руководство пользователя → Help.ShowHelp(this, "Help_01_Фамилия.chm");
+	• Выход → Application.Exit();
+5. И не забудь в самом начале класса frmMainMDI (сразу под InitializeComponent();) добавить сам метод OpenChildForm:csharp
+private void OpenChildForm(Form child)
+{
+    child.MdiParent = this;
+    child.Show();
+}
