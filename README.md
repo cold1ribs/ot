@@ -185,3 +185,23 @@ namespace MasterskayaKukol
     }
 }
 
+
+
+
+
+
+
+
+static void Main()
+{
+    Application.EnableVisualStyles();
+    Application.SetCompatibleTextRenderingDefault(false);
+
+    frmLogin login = new frmLogin();
+    if (login.ShowDialog() == DialogResult.OK)
+    {
+        Application.Run(new frmMainMDI());
+    }
+}
+
+
