@@ -537,6 +537,9 @@ html
 MessageBox.Show("Информационная система мастерской кукол Пандоро\nВерсия: 1.0\nРазработчик: Коновалова\nГод разработки: 2026", "О программе", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
+приито
+
+
 
 
 using System;
